@@ -1,2 +1,2 @@
 # dio-impulso-javascript
-Repositório a ser utilizada no bootcamp da dio
+Repositório a ser utilizado no bootcamp da dio
