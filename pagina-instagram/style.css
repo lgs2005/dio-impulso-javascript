@@ -40,6 +40,12 @@ footer {
 	object-fit: cover;
 }
 
+@media (max-width: 900px) {
+	#img-celular {
+		display: none;
+	}
+}
+
 #main-content {
 	display: flex;
 	flex-direction: column;
@@ -58,6 +64,15 @@ footer {
 
 	background-color: white;
 	border: gainsboro solid 1px;
+}
+
+@media (max-width: 400px) {
+	.whitebox {
+		padding: 0;
+		background: none;
+		border: none;
+		margin: 25px;
+	}
 }
 
 #form-login img {
@@ -141,11 +156,6 @@ footer {
 	margin: 0 5px;
 }
 
-@media (max-width: 900px) {
-	#img-celular {
-		display: none;
-	}
-}
 
 footer div {
 	display: flex;
