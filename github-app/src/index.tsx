@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <div style={{ padding: 50 }}>
-      <UserCardLoader username='asfijaoisfjo'/>
+      <UserCardLoader username='lgs2005'/>
     </div>
   </React.StrictMode>
 );
