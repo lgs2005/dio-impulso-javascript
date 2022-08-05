@@ -1,4 +1,4 @@
-import { User } from "../Typings";
+import { User } from "../../Typings";
 import s from "./styles";
 
 type Props = {
@@ -10,7 +10,7 @@ export default function UserCard({ user }: Props) {
 		<s.Card>
 			<img src={user.avatar_url} alt="User avatar" />
 			<s.InfoSection>
-				<s.Username>{user.name}</s.Username>
+				<s.Username>{user.name ?? user.login}</s.Username>
 				<s.Tag href={user.html_url}>@{user.login}</s.Tag>
 				<s.Bio>{user.bio}</s.Bio>
 				<s.Space />

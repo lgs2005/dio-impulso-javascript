@@ -34,7 +34,7 @@ const s = {
 export default function Searchbox(props: Props) {
 	const searchbox = useRef<HTMLInputElement>(null);
 	const handleClick = () => {
-		if (searchbox.current && searchbox.current.value != '') {
+		if (searchbox.current && searchbox.current.value !== '') {
 			props.onSearch(searchbox.current.value);
 		}
 	}

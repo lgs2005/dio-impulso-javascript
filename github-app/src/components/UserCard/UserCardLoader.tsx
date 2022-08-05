@@ -1,5 +1,5 @@
-import { User } from "../Typings";
-import { useAsync } from "../useAsyncHook";
+import { User } from "../../Typings";
+import { useAsync } from "../../useAsyncHook";
 import UserCard from "./UserCard";
 import s from "./styles";
 
