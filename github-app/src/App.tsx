@@ -15,13 +15,17 @@ const GlobalStyle = createGlobalStyle`
 `
 
 export default function App() {
-	const [search, setSearch] = useState('lgs2005');
+	const [search, setSearch] = useState('');
 
 	return (
 		<div style={{ padding: 50, maxWidth: 'calc(100vw - 120px)' }}>
 			<GlobalStyle />
 			<Searchbox onSearch={(name) => setSearch(name)} />
-			<LoadUserProfile username={search} />
+			{
+				search === ''
+				? <span>Search for an user above.</span>
+				: <LoadUserProfile username={search} />
+			}
 		</div>
 	)
 }
