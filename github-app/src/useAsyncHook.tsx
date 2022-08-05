@@ -48,7 +48,7 @@ export function useAsync<T, P extends any[]>(
 			})
 		);
 	// eslint-disable-next-line
-	}, params);
+	}, [promise, ...params]);
 
 	return status;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import App from './App';
 import './index.css';
-import UserCardLoader from './UserCardLoader';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -9,8 +9,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <div style={{ padding: 50 }}>
-      <UserCardLoader username='lgs2005'/>
-    </div>
+    <App />
   </React.StrictMode>
 );

@@ -1,9 +1,4 @@
-import styled from "styled-components"
-import { User } from "./Typings"
-
-type Props = {
-	user: User,
-}
+import styled from "styled-components";
 
 const s = {
 	Card: styled.div`
@@ -53,22 +48,14 @@ const s = {
 			margin-right: 10px;
 		}
 	`,
+
+	StatusHeader: styled.span`
+		width: 100%;
+		text-align: center;
+		color: gray;
+		align-self: center;
+		font-size: large;
+	`,
 }
 
-export default function UserCard({ user }: Props) {
-	return (
-		<s.Card>
-			<img src={user.avatar_url} alt="User avatar" />
-			<s.InfoSection>
-				<s.Username>{user.name}</s.Username>
-				<s.Tag href={user.html_url}>@{user.login}</s.Tag>
-				<s.Bio>{user.bio}</s.Bio>
-				<s.Space />
-				<s.Follows>
-					<span>{user.followers} Followers</span>
-					<span>{user.following} Following</span>
-				</s.Follows>
-			</s.InfoSection>
-		</s.Card>
-	)
-}
+export default s;

@@ -1,8 +1,10 @@
-import { User } from "./Typings";
-import { useAsync } from "./useAsyncHook";
+import { User } from "../Typings";
+import { useAsync } from "../useAsyncHook";
 import UserCard from "./UserCard";
+import s from "./styles";
 
 async function fetchUser(username: string) {
+	console.log(`Fetching user ${username}`)
 	let result = await fetch(`https://api.github.com/users/${username}`);
 
 	if (result.status === 200) {
@@ -17,17 +19,27 @@ async function fetchUser(username: string) {
 export default function UserCardLoader(props: { username: string } ) {
 	const user = useAsync(fetchUser, props.username);
 
+	let statusText: string | undefined = undefined;
+
 	if (user.loading) {
-		return <>Loading...</>
+		statusText = 'Loading user...';
+	}
+	else if (user.error) {
+		statusText = 'Couldn\'t load user: ' + String(user.value);
+	}
+	else if (user.value == null) {
+		statusText = `User ${props.username} doesn't exist.`;
 	}
 
-	if (user.error) {
-		return <>Error: {String(user.value)}</>
+	if (statusText) {
+		return (
+			<s.Card>
+				<s.StatusHeader>
+					{statusText}
+				</s.StatusHeader>
+			</s.Card>
+		);
 	}
-
-	if (user.value == null) {
-		return <>No such user</>
-	}
-
+	
 	return <UserCard user={user.value} />
 }
