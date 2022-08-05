@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { createGlobalStyle } from "styled-components";
+import LoadUserProfile from "./components/LoadUserProfile";
 import Searchbox from "./components/Searchbox";
-import UserCardLoader from "./components/UserCard/UserCardLoader";
 
 const GlobalStyle = createGlobalStyle`
 	* {
@@ -18,10 +18,10 @@ export default function App() {
 	const [search, setSearch] = useState('lgs2005');
 
 	return (
-		<div style={{ padding: 50 }}>
+		<div style={{ padding: 50, maxWidth: 'calc(100vw - 120px)' }}>
 			<GlobalStyle />
 			<Searchbox onSearch={(name) => setSearch(name)} />
-			<UserCardLoader username={search}/>
+			<LoadUserProfile username={search} />
 		</div>
 	)
 }

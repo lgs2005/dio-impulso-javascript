@@ -7,10 +7,11 @@ export type User = {
 	id: number,
 	avatar_url: string,
 	html_url: string,
-	name: string,
+	name: string | null,
 	bio: string,
 	followers: number,
 	following: number,
+	url: string,
 }
 
 /** Schema for repository data returned by Github's API
@@ -21,7 +22,7 @@ export type Repository = {
 	name: string,
 	full_name: string,
 	html_url: string,
-	description?: string,
+	description: string | null,
 	fork: boolean,
 	stargazers_count: number,
 	watchers_count: number,

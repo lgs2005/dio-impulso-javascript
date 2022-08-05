@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+type Props = {
+	name: string,
+	tag: string,
+	bio: string,
+	followers: number,
+	following: number,
+	avatar: string,
+	link: string,
+}
+
 const s = {
 	Card: styled.div`
 		display: flex;
@@ -48,14 +58,22 @@ const s = {
 			margin-right: 10px;
 		}
 	`,
-
-	StatusHeader: styled.span`
-		width: 100%;
-		text-align: center;
-		color: gray;
-		align-self: center;
-		font-size: large;
-	`,
 }
 
-export default s;
+export default function UserCard(props: Props) {
+	return (
+		<s.Card>
+			<img src={props.avatar} alt="User avatar" />
+			<s.InfoSection>
+				<s.Username>{props.name}</s.Username>
+				<s.Tag href={props.link}>@{props.tag}</s.Tag>
+				<s.Bio>{props.bio}</s.Bio>
+				<s.Space />
+				<s.Follows>
+					<span>{props.followers} Followers</span>
+					<span>{props.following} Following</span>
+				</s.Follows>
+			</s.InfoSection>
+		</s.Card>
+	)
+}
