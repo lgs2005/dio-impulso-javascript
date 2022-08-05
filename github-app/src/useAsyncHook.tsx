@@ -35,6 +35,12 @@ export function useAsync<T, P extends any[]>(
 	});
 
 	useEffect(() => {
+		setStatus({
+			loading: true,
+			error: false,
+			value: undefined,
+		});
+
 		promise(...params).then(
 			(value) => setStatus({
 				loading: false,
