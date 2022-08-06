@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./User";
 
@@ -8,6 +9,9 @@ export class Post {
 
 	@Column({ length: 255 })
 	title: string
+
+	@Column({ length: 255 })
+	email: string
 
 	@Column({ type: "text" })
 	content: string
