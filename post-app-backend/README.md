@@ -1,7 +1,4 @@
-# Awesome Project Build with TypeORM
+# Awesome Project NOT BUILT WITH TYPEORM but i do use it eventually
 
-Steps to run this project:
 
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+oaoeooeoeooeaoeoaoeaooaoaeoeoaoeoeoaoe
