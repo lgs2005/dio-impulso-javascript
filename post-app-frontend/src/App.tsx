@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components";
-import { fetchTokenBearer } from "./api";
+import { fetchTokenBearer } from "./lib/api";
 import Floater from "./components/Floater";
 import LoginForm from "./components/LoginForm";
 import ModalContainer from "./components/ModalContainer";
+import { closeIcon } from "./lib/icons";
 import store, { useAppSelector } from "./store/store";
 import { updateUser } from "./store/user";
 
@@ -36,19 +37,6 @@ const SCloseButton = styled.button`
 		height: 100%;
 	}
 `;
-
-const closeIcon = <svg viewBox="0 0 100 100">
-	<path fill="black" fillRule={'nonzero'} d={`
-		M 10 15
-		Q 10 10 15 10
-		L 90 85
-		Q 90 90 85 90 z
-		M 85 10
-		Q 90 10 90 15
-		L 15 90
-		Q 10 90 10 85 z
-	`}/>
-</svg>
 
 
 export default function App() {

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { login, LoginError, register } from "../api";
+import { login, LoginError, register } from "../lib/api";
 import store from "../store/store";
 import { updateUser } from "../store/user";
 
