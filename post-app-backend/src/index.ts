@@ -17,9 +17,9 @@ async function startServer() {
     app.use(authRoutes);
     app.use(postRoutes);
     app.use(searchRoutes);
-    
+
     app.listen(5000, () => {
-        console.log('server up');
+        console.log('server is up.');
     });
 }
 

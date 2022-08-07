@@ -1,62 +1,78 @@
-import { useEffect } from "react"
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react"
+import styled from "styled-components";
+import { fetchTokenBearer } from "./api";
+import Floater from "./components/Floater";
+import LoginForm from "./components/LoginForm";
+import ModalContainer from "./components/ModalContainer";
 import store, { useAppSelector } from "./store/store";
-import { update, userSlice } from "./store/user";
-import { User } from "./types";
+import { updateUser } from "./store/user";
 
-async function fetchTokenBearer(token: string) {
-	let url = 'https://localhost:5000/user';
-	let options = { headers: { Authentication: 'Bearer ' + token } }
-
-	return new Promise<User>((resolve, reject) => {
-		setTimeout(() => {
-			let user: User = {
-				name: 'test',
-				email: 'test',
-				id: 0,
-			};
-
-			resolve(user);
-		}, 2000);
-	})
-
-	// return fetch(url, options).then(
-	// 	async res => {
-	// 		if (res.status == 200) {
-	// 			return await res.json() as User;
-	// 		} else {
-	// 			return null;
-	// 		}
-	// 	},
-
-	// 	err => {
-	// 		return null;
-	// 	}
-	// );
-	
-}
 
 async function tryLoginLocalUser() {
-	let savedToken = window.localStorage.getItem('post-app:jwt') ?? '';
+	let savedToken = window.localStorage.getItem('post-app:jwt');
+
 	if (savedToken != null) {
-		console.log('we')
-		let user = await fetchTokenBearer(savedToken);
+		let user = await fetchTokenBearer(savedToken).catch(() => null);
 
 		if (user != null) {
-			console.log('sus');
-		 	store.dispatch(update({ user, token: savedToken }));
+		 	store.dispatch(
+				updateUser({ user, token: savedToken })
+			);
+		} else {
+			window.localStorage.removeItem('post-app:jwt');
 		}
 	}
 }
 
+const SCloseButton = styled.button`
+	width: 30px;
+	height: 30px;
+	border: 2px solid black;
+	border-radius: 5px;
+	background: none;
+
+	* {
+		width: 100%;
+		height: 100%;
+	}
+`;
+
+const closeIcon = <svg viewBox="0 0 100 100">
+	<path fill="black" fillRule={'nonzero'} d={`
+		M 10 15
+		Q 10 10 15 10
+		L 90 85
+		Q 90 90 85 90 z
+		M 85 10
+		Q 90 10 90 15
+		L 15 90
+		Q 10 90 10 85 z
+	`}/>
+</svg>
+
+
 export default function App() {
 	const currentUser = useAppSelector((state) => state.user.user);
+	const [loginShown, setLoginShown] = useState(false);
 
 	useEffect(() => {tryLoginLocalUser()}, []);
+
+	const showLogin = () => setLoginShown(true);
+	const hideLogin = () => setLoginShown(false);
 
 	return (
 		<div>
 			Hello ! {currentUser?.name ?? "no one."}
+			<button onClick={showLogin}>Click here to login!</button>
+
+			<ModalContainer open={loginShown} onCancel={hideLogin}>
+				<Floater top='0' right='0'>
+					<SCloseButton onClick={hideLogin}>
+						{closeIcon}
+					</SCloseButton>
+				</Floater>
+				<LoginForm onSucess={hideLogin}/>
+			</ModalContainer>
 		</div>
 	)
 }

@@ -14,7 +14,7 @@ authRoutes.get('/token', async (req, res) => {
 		return res.status(400).send('Invalid authorization header.');
 	}
 
-	let authInfo =
+	let authInfo: string[] =
 		Buffer.from(args[1], 'base64')
 			.toString('utf-8')
 			.split(':', 2)
@@ -24,7 +24,7 @@ authRoutes.get('/token', async (req, res) => {
 	}
 
 	let [username, password] = authInfo;
-	let user = await db
+	let user: User | null = await db
 		.getRepository(User)
 		.createQueryBuilder('user')
 		.addSelect('user.password')
@@ -32,10 +32,10 @@ authRoutes.get('/token', async (req, res) => {
 		.getOne();
 
 	if (user == null) {
-		return res.status(400).send('User doesn\'t exist.');
+		return res.status(404).send('User doesn\'t exist.');
 	}
 	if (!bcrypt.compareSync(password, user.password)) {
-		return res.status(400).send('Wrong password.');
+		return res.status(401).send('Wrong password.');
 	}
 
 	let token: string = JWT.sign(
@@ -48,7 +48,14 @@ authRoutes.get('/token', async (req, res) => {
 		}
 	);
 
-	return res.status(200).json({ token });
+	return res.status(200).json({
+		token: token,
+		user: {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+		}
+	});
 })
 
 export async function jwtAuthMiddleware(req: Request, res: Response, next: NextFunction) {
