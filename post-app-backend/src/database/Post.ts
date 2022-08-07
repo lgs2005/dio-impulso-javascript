@@ -10,9 +10,6 @@ export class Post {
 	@Column({ length: 255 })
 	title: string
 
-	@Column({ length: 255 })
-	email: string
-
 	@Column({ type: "text" })
 	content: string
 

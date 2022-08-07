@@ -7,10 +7,13 @@ export class User {
 	@PrimaryGeneratedColumn()
 	id: number
 
-	@Column({ length: 255 })
+	@Column({ length: 255, unique: true })
 	name: string
 
-	@Column({ length: 100 })
+	@Column({ length: 255, unique: true })
+	email: string
+
+	@Column({ length: 100, select: false })
 	password: string
 
 	@OneToMany(() => Post, (post) => post.author)

@@ -2,7 +2,9 @@ import * as express from "express";
 import * as cors from "cors";
 import { db } from "./database/db";
 import { authRoutes } from "./auth";
-import { handleHttpErrorMiddleware } from "./HttpError";
+import { userRoutes } from "./routers/users";
+import { postRoutes } from "./routers/posts";
+import { searchRoutes } from "./routers/search";
 
 async function startServer() {  
     await db.initialize();
@@ -11,11 +13,12 @@ async function startServer() {
     app.use(express.json());
     app.use(cors());
 
+    app.use(userRoutes);
     app.use(authRoutes);
+    app.use(postRoutes);
+    app.use(searchRoutes);
     
-    app.use(handleHttpErrorMiddleware)
-
-    app.listen(3000, () => {
+    app.listen(5000, () => {
         console.log('server up');
     });
 }
