@@ -15,11 +15,13 @@ export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		updateUser: (state, action: PayloadAction<{user: User, token: string}>) => {
+		updateUser: (state, action: PayloadAction<UserSliceState>) => {
 			state.user = action.payload.user
 			state.token = action.payload.token
 
-			window.localStorage.setItem('post-app:jwt', state.token);
+			if (state.token) {
+				window.localStorage.setItem('post-app:jwt', state.token );
+			}
 		}
 	}
 })

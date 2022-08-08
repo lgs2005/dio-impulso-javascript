@@ -38,6 +38,38 @@ const SCloseButton = styled.button`
 	}
 `;
 
+const SHeaderContainer = styled.header`
+	position: sticky;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 25px;
+	width: auto;
+	box-shadow: 0 0 5px black;
+`;
+
+const SUserInfoContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 15%;
+	align-items: center;
+
+	button {
+		margin-top: 10px;
+		border: none;
+		color: white;
+		background-color: #0088ff;
+		border-radius: 15px;
+		padding: 10px 30px;
+		font-weight: bold;
+	}
+`;
+
+const SUsername = styled.span`
+	font-style: italic;
+`;
 
 export default function App() {
 	const currentUser = useAppSelector((state) => state.user.user);
@@ -48,11 +80,18 @@ export default function App() {
 	const showLogin = () => setLoginShown(true);
 	const hideLogin = () => setLoginShown(false);
 
+	const handleLogout = () => {
+		window.localStorage.removeItem('post-app:jwt');
+		store.dispatch(
+			updateUser({
+				user: null,
+				token: null,
+			})
+		);
+	};
+
 	return (
 		<div>
-			Hello ! {currentUser?.name ?? "no one."}
-			<button onClick={showLogin}>Click here to login!</button>
-
 			<ModalContainer open={loginShown} onCancel={hideLogin}>
 				<Floater top='0' right='0'>
 					<SCloseButton onClick={hideLogin}>
@@ -61,6 +100,25 @@ export default function App() {
 				</Floater>
 				<LoginForm onSucess={hideLogin}/>
 			</ModalContainer>
+
+			<SHeaderContainer>
+				<h1>Post App</h1>
+				<SUserInfoContainer>
+					{
+						currentUser == null
+						? <>
+							<span>Not logged in.</span>
+							<button onClick={showLogin}>Login</button>
+						</>
+						: <>
+							<span>Logged in as 
+								<SUsername> {currentUser.name}</SUsername>
+							</span>
+							<button onClick={handleLogout}>Logout</button>
+						</>
+					}
+				</SUserInfoContainer>
+			</SHeaderContainer>
 		</div>
 	)
 }
