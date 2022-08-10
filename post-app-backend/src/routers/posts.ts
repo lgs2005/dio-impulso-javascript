@@ -23,6 +23,7 @@ postRoutes.post('/post', jwtAuthMiddleware, async (req, res) => {
 			title: title,
 			content: content,
 			author: req.user,
+			lastUpdated: new Date().toUTCString(),
 		});
 
 	let postID = result.identifiers[0].id;
@@ -79,6 +80,7 @@ postRoutes.put('/post/:id', jwtAuthMiddleware, async (req, res) => {
 	await db.getRepository(Post).update(post, {
 		title: title ?? post.title,
 		content: content ?? post.content,
+		lastUpdated: new Date().toUTCString(),
 	});
 
 	return res.status(200).send();

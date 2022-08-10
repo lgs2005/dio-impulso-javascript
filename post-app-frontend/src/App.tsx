@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components";
-import { fetchTokenBearer } from "./lib/api";
+import { fetchTokenBearer, getRecentPosts } from "./lib/api";
 import Floater from "./components/Floater";
 import LoginForm from "./components/LoginForm";
 import ModalContainer from "./components/ModalContainer";
 import { closeIcon } from "./lib/icons";
 import store, { useAppSelector } from "./store/store";
 import { updateUser } from "./store/user";
+import PostList from "./components/PostList";
+import { Post } from "./lib/types";
+import PostPage from "./components/PostPage";
 
 
 async function tryLoginLocalUser() {
@@ -23,6 +26,68 @@ async function tryLoginLocalUser() {
 			window.localStorage.removeItem('post-app:jwt');
 		}
 	}
+}
+
+export default function App() {
+	const currentUser = useAppSelector((state) => state.user.user);
+	const [loginShown, setLoginShown] = useState(false);
+	const [post, setPost] = useState<Post | null>(null);
+
+	useEffect(() => {tryLoginLocalUser()}, []);
+
+	const showLogin = () => setLoginShown(true);
+	const hideLogin = () => setLoginShown(false);
+
+	const handleLogout = () => {
+		window.localStorage.removeItem('post-app:jwt');
+		store.dispatch(
+			updateUser({
+				user: null,
+				token: null,
+			})
+		);
+	};
+
+	return (
+		<div>
+			<ModalContainer open={loginShown} onCancel={hideLogin}>
+				<Floater top='0' right='0'>
+					<SCloseButton onClick={hideLogin}>
+						{closeIcon}
+					</SCloseButton>
+				</Floater>
+				<LoginForm onSucess={hideLogin}/>
+			</ModalContainer>
+
+			<SHeaderContainer>
+				<h1>Post App</h1>
+				<SUserInfoContainer>
+					{
+						currentUser == null
+						? <>
+							<span>Not logged in.</span>
+							<button onClick={showLogin}>Login</button>
+						</>
+						: <>
+							<span>Logged in as 
+								<SUsername> {currentUser.name}</SUsername>
+							</span>
+							<button onClick={handleLogout}>Logout</button>
+						</>
+					}
+				</SUserInfoContainer>
+			</SHeaderContainer>
+
+			{
+				post != null
+				? <PostPage post={post} goback={() => setPost(null)} />
+				: <>
+					<SListTitle>Recent Posts</SListTitle>
+					<PostList fetch={getRecentPosts} select={setPost}/>
+				</>
+			}
+		</div>
+	)
 }
 
 const SCloseButton = styled.button`
@@ -71,54 +136,8 @@ const SUsername = styled.span`
 	font-style: italic;
 `;
 
-export default function App() {
-	const currentUser = useAppSelector((state) => state.user.user);
-	const [loginShown, setLoginShown] = useState(false);
-
-	useEffect(() => {tryLoginLocalUser()}, []);
-
-	const showLogin = () => setLoginShown(true);
-	const hideLogin = () => setLoginShown(false);
-
-	const handleLogout = () => {
-		window.localStorage.removeItem('post-app:jwt');
-		store.dispatch(
-			updateUser({
-				user: null,
-				token: null,
-			})
-		);
-	};
-
-	return (
-		<div>
-			<ModalContainer open={loginShown} onCancel={hideLogin}>
-				<Floater top='0' right='0'>
-					<SCloseButton onClick={hideLogin}>
-						{closeIcon}
-					</SCloseButton>
-				</Floater>
-				<LoginForm onSucess={hideLogin}/>
-			</ModalContainer>
-
-			<SHeaderContainer>
-				<h1>Post App</h1>
-				<SUserInfoContainer>
-					{
-						currentUser == null
-						? <>
-							<span>Not logged in.</span>
-							<button onClick={showLogin}>Login</button>
-						</>
-						: <>
-							<span>Logged in as 
-								<SUsername> {currentUser.name}</SUsername>
-							</span>
-							<button onClick={handleLogout}>Logout</button>
-						</>
-					}
-				</SUserInfoContainer>
-			</SHeaderContainer>
-		</div>
-	)
-}
+const SListTitle = styled.h2`
+	text-align: center;
+	font-size: xx-large;
+	text-decoration: underline;
+`;

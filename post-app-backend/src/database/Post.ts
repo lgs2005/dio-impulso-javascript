@@ -15,4 +15,7 @@ export class Post {
 
 	@ManyToOne(() => User, (user) => user.posts)
 	author: User
+
+	@Column({ type: 'datetime' })
+	lastUpdated: Date
 }

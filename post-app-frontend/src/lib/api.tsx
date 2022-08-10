@@ -1,5 +1,5 @@
 import { Base64 } from "js-base64";
-import { User } from "./types";
+import { Post, User } from "./types";
 
 const BASE_URL = new URL('http://localhost:5000');
 
@@ -79,5 +79,20 @@ export async function register(username: string, password: string, email: string
 				throw new ResponseError(res);
 			}
 		},
+	)
+}
+
+export async function getRecentPosts() {
+	let url = new URL('/search', BASE_URL);
+	url.searchParams.append('sort', 'recent');
+
+	return fetch(url).then(
+		async res => {
+			if (res.status === 200) {
+				return await res.json() as Post[];
+			} else {
+				throw new ResponseError(res);
+			}
+		}
 	)
 }

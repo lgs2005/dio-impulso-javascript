@@ -5,7 +5,7 @@ import { Post } from "../database/Post";
 export const searchRoutes = Router();
 
 searchRoutes.get('/search', async (req, res) => {
-	let { q, user } = req.query;
+	let { q, user, sort } = req.query;
 	
 	let query = db
 		.getRepository(Post)
@@ -19,7 +19,11 @@ searchRoutes.get('/search', async (req, res) => {
 		query = query.where('user.name = :name', { user });
 	}
 
-	let posts = await query.getMany();
+	if (sort === 'recent') {
+		query = query.addOrderBy('post.lastUpdated', 'DESC');
+	}
+
+	let posts = await query.limit(100).getMany();
 
 	return res.status(200).json(posts);
 });
